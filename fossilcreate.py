@@ -85,7 +85,7 @@ def verifyUser(username):
 
 
 def getUserRepoFilename(username, reponame):
-    return f"UR_{username}_{reponame}.fossil"
+    return f"_{username}_{reponame}.fossil"
 
 
 def addUserRepo(username, reponame):
