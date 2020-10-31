@@ -1,6 +1,7 @@
 import os
 import sys
 import shlex
+import shutil
 import subprocess
 import requests
 import random
@@ -16,7 +17,7 @@ def get_random_string(length):
 
     return result_str
 
-fossil = "bin/fossil"
+fossil = "fossil"
 
 defaultuser=getpass.getuser()
 defaultpassword=get_random_string(16)
@@ -31,6 +32,9 @@ def joinLoginGroup(targetRepo, groupRepo):
 
 
 def initInternal():
+    if os.path.exists("internal"):
+        shutil.rmtree("internal")
+
     if not os.path.exists("internal"):
         os.mkdir("internal")
 
@@ -106,6 +110,9 @@ def removeUserRepo(username, reponame):
         os.remove(repoPath)
 
 
+fossil_server_cmd = shlex.split("fossil server --nossl ./internal")
+fossil_server = subprocess.Popen(fossil_server_cmd)
+
 ext=".fossil"
 initInternal()
 addUserRepo(defaultuser, "demo")
@@ -119,3 +126,8 @@ fname = getUserRepoFilename(defaultuser, "demo")
 fname = fname[:len(fname)-len(ext)]
 print(fname)
 whoami(authtoken, fname)
+
+fossil_server.terminate()
+fossil_server.wait()
+
+
