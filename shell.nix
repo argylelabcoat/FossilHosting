@@ -1,6 +1,6 @@
 { pkgs ? import <nixpkgs> {} }:
   with pkgs; mkShell {
-    buildInputs = [ fossil ] ++ (with python38Packages;[
+    buildInputs = [ fossil sassc go ] ++ (with python38Packages;[
 click
 flask
 requests
